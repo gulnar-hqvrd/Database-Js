@@ -88,9 +88,22 @@
             ERROR: 'error'
         }
 
+function Toast(type , css , message){
+    this.type = type;
+    this.css = css;
+    this.message = message;
+}
 
+toastr.options.timeOut = 1000;
+toastr.options.fadeOut = 250;
+toastr.options.fadeIn = 250;
 
-        
+function ShowToast(type , location , msg)    {
+    var t = new Toast(type , location , msg)
+    toastr.options.positionClass = t.css;
+    toastr[t.type](t.message)
+}
+
         function ShowMessage(message, messageType, messagePosition) {
             toastr.options = {
                 "closeButton": true,
@@ -172,7 +185,8 @@
 
             $(document).on('click', '.delete', (e) => { 
                 let item = e.currentTarget;
-                alert($(item).data('id'));
+                // alert($(item).data('id'));
+                ShowToast(MessageType.SUCCESS,MessagePositin.TOP_RIGHT , "Detele this account")
             });
         });
     </script>

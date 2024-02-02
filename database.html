@@ -1,53 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
 
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+    />
 
     <style>
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 0;
-            background-color: #fff;
-            font-family: "Roboto", sans-serif;
-            font-size: 16px;
-            color: #333;
-            line-height: 1.5;
-            margin-top: 50px;
-        }
+      .container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 0;
+        background-color: #fff;
+        font-family: "Roboto", sans-serif;
+        font-size: 16px;
+        color: #333;
+        line-height: 1.5;
+        margin-top: 50px;
+      }
 
-        .card {
-            border-radius: 10px;
-            padding: 40px;
-            margin-top: 20px;
-            box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
-        }
+      .card {
+        border-radius: 10px;
+        padding: 40px;
+        margin-top: 20px;
+        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <div class="card">
-            <table id="example" class="display nowrap" style="width:100%">
-                <thead>
-                    <!-- <tr>
+      <div class="card">
+        <table id="example" class="display nowrap" style="width: 100%">
+          <thead>
+            <!-- <tr>
                         <th>Id</th>
                         <th>Category Name</th>
                         <th>Description</th>
                     </tr> -->
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
@@ -59,137 +69,147 @@
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-
-
-
     <script>
+      var MessagePositin = {
+        /**
+         * Ekranın sol üst köşesinde mesaj gösterir
+         */
+        TOP_RIGHT: "toast-top-right",
+        BOTTOM_RIGHT: "toast-bottom-right",
+        BOTTOM_LEFT: "toast-bottom-left",
+        TOP_LEFT: "toast-top-left",
+        TOP_FULL_WIDTH: "toast-top-full-width",
+        BOTTOM_FULL_WIDTH: "toast-bottom-full-width",
+        TOP_CENTER: "toast-top-center",
+        BOTTOM_CENTER: "toast-bottom-center",
+      };
 
+      var MessageType = {
+        SUCCESS: "success",
+        INFO: "info",
+        WARNING: "warning",
+        ERROR: "error",
+      };
 
+      function Toast(type, css, message) {
+        this.type = type;
+        this.css = css;
+        this.message = message;
+      }
 
+      toastr.options.timeOut = 1000;
+      toastr.options.fadeOut = 250;
+      toastr.options.fadeIn = 250;
 
-        var MessagePositin = {
-            /**
-             * Ekranın sol üst köşesinde mesaj gösterir
-             */
-            TOP_RIGHT: 'toast-top-right',
-            BOTTOM_RIGHT: 'toast-bottom-right',
-            BOTTOM_LEFT: 'toast-bottom-left',
-            TOP_LEFT: 'toast-top-left',
-            TOP_FULL_WIDTH: 'toast-top-full-width',
-            BOTTOM_FULL_WIDTH: 'toast-bottom-full-width',
-            TOP_CENTER: 'toast-top-center',
-            BOTTOM_CENTER: 'toast-bottom-center'
-        }
+      function ShowToast(type, location, msg) {
+        var t = new Toast(type, location, msg);
+        toastr.options.positionClass = t.css;
+        toastr[t.type](t.message);
+      }
 
-        var MessageType = {
-            SUCCESS: 'success',
-            INFO: 'info',
-            WARNING: 'warning',
-            ERROR: 'error'
-        }
+      function ShowMessage(message, messageType, messagePosition) {
+        toastr.options = {
+          closeButton: true,
+          debug: false,
+          newestOnTop: false,
+          progressBar: true,
+          positionClass: messagePosition,
+          preventDuplicates: false,
+          onclick: null,
+          showDuration: "300",
+          hideDuration: "1000",
+          timeOut: "5000",
+          extendedTimeOut: "1000",
+          showEasing: "swing",
+          hideEasing: "linear",
+          showMethod: "fadeIn",
+          hideMethod: "fadeOut",
+        };
 
-function Toast(type , css , message){
-    this.type = type;
-    this.css = css;
-    this.message = message;
-}
-
-toastr.options.timeOut = 1000;
-toastr.options.fadeOut = 250;
-toastr.options.fadeIn = 250;
-
-function ShowToast(type , location , msg)    {
-    var t = new Toast(type , location , msg)
-    toastr.options.positionClass = t.css;
-    toastr[t.type](t.message)
-}
-
-        function ShowMessage(message, messageType, messagePosition) {
-            toastr.options = {
-                "closeButton": true,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": true,
-                "positionClass": messagePosition,
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-
-            toastr[messageType](message);
-        }
+        toastr[messageType](message);
+      }
     </script>
-    
-
 
     <script>
-        // https://datatables.net/
+      // https://datatables.net/
 
-        $(document).ready(function () {
-            // $('#example').DataTable({
-            //     dom: 'Bfrtip',
-            //     buttons: [
-            //         'copy', 'csv', 'excel', 'pdf', 'print'
-            //     ]
-            // });
+      $(document).ready(function () {
+        // $('#example').DataTable({
+        //     dom: 'Bfrtip',
+        //     buttons: [
+        //         'copy', 'csv', 'excel', 'pdf', 'print'
+        //     ]
+        // });
 
+        $("#example").DataTable({
+          scrollX: true,
+          dom: "Bfrtip",
+          pageLength: 2,
+          ajax: {
+            url: "https://northwind.vercel.app/api/categories",
+            dataSrc: "",
+            dataType: "json",
+            contentType: "application/json, charset=utf-8",
+            type: "GET",
+          },
+          columns: [
+            { title: "Id", data: "id" },
+            { title: "Category Name", data: "name" },
+            { title: "Description", data: "description" },
+            { title: "Transactions", data: "id" },
+          ],
+          columnDefs: [
+            { targets: 0, width: "40px" },
+            { targets: 1, width: "250px" },
+            { targets: 2, width: "100%" },
+            {
+              targets: 3,
+              width: "40px",
+              render: function (data, type, row) {
+                // data -> mevcut hücrenin verisini teslim eder
+                // type -> mevcut hücrenin tipini teslim eder
+                // row -> mevcut satırın verisini teslim eder
 
-            $('#example').DataTable({
-                'scrollX': true,
-                'dom': 'Bfrtip',
-                'pageLength': 2,
-                ajax: {
-                    url: 'https://northwind.vercel.app/api/categories',
-                    dataSrc: '',
-                    dataType: 'json',
-                    contentType: 'application/json, charset=utf-8',
-                    type: 'GET'
-                },
-                columns: [
-                    { 'title': 'Id', data: 'id' },
-                    { 'title': 'Category Name', data: 'name' },
-                    { 'title': 'Description', data: 'description' },
-                    { 'title': 'Transactions', data: 'id' }
-                ],
-                columnDefs: [
-                    { 'targets': 0, width: '40px' },
-                    { 'targets': 1, width: '250px' },
-                    { 'targets': 2, width: '100%' },
-                    {
-                        'targets': 3, width: '40px', render: function (data, type, row) {
- 
-                            // data -> mevcut hücrenin verisini teslim eder
-                            // type -> mevcut hücrenin tipini teslim eder
-                            // row -> mevcut satırın verisini teslim eder
-
-                            return `<button data-id="${data}" class="delete dt-button buttons-html5"><i class="fa fa-trash"></i></button>`
-                        }
-                    },
-                    // { 'targets': [1, 2], width: '100px' }
-                ],
-                buttons: [
-                    'pageLength', 'excel', 'pdf', 'print', 'copy', 'csv' //, 'colvis'
-                ],
-                lengthMenu: [
-                    [1, 5, 10, 15, 20, 25, -1],
-                    ['1 page', '5 page', '10 page', '15 page', '20 page', '25 page', 'Show All']
-                ]
-            }); 
-
-            $(document).on('click', '.delete', (e) => { 
-                let item = e.currentTarget;
-                // alert($(item).data('id'));
-                ShowToast(MessageType.SUCCESS,MessagePositin.TOP_RIGHT , "Detele this account")
-            });
+                return `<button data-id="${data}" class="delete dt-button buttons-html5"><i class="fa fa-trash"></i></button>`;
+              },
+            },
+            // { 'targets': [1, 2], width: '100px' }
+          ],
+          buttons: [
+            "pageLength",
+            "excel",
+            "pdf",
+            "print",
+            "copy",
+            "csv", //, 'colvis'
+          ],
+          lengthMenu: [
+            [1, 5, 10, 15, 20, 25, -1],
+            [
+              "1 page",
+              "5 page",
+              "10 page",
+              "15 page",
+              "20 page",
+              "25 page",
+              "Show All",
+            ],
+          ],
         });
+        $(document).on("click", ".delete", (e) => {
+          let tr = e.currentTarget.closest("tr");
+        //   console.log(tr);
+       $(tr).hide(1000, function () {
+            tr.remove();
+          });
+          //   let item = e.currentTarget;
+          ShowToast(
+            MessageType.SUCCESS,
+            MessagePositin.TOP_RIGHT,
+            "Delete this account"
+          );
+        });
+      });
     </script>
-</body>
-
+  </body>
 </html>
